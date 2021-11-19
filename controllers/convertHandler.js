@@ -8,7 +8,7 @@ function ConvertHandler(input) {
         ["mi", "km"],
     ]);
     this.input = input;
-    this.getNum = function () {
+    this.getNum = function (custominput) {
         if (custominput) {
             this.input = input;
         }
@@ -55,7 +55,15 @@ function ConvertHandler(input) {
         return result;
     };
 
-    this.getNum();
+    this.init = function () {
+        this.getNum();
+        this.getUnit();
+        this.convert();
+        this.getReturnUnit();
+        this.spellOutUnit();
+        this.getString();
+        return this;
+    };
 }
 
 module.exports = ConvertHandler;
