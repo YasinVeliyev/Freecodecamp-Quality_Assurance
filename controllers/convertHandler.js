@@ -9,16 +9,16 @@ function ConvertHandler(input) {
     ]);
     this.input = input;
     this.getNum = function (custominput) {
-        if (custominput) {
-            this.input = input;
+        if(custominput.match(/^[A-Za-z]+$/)){
+            custominput=1+custominput
         }
-        let initInput = this.input.match(/^\d+(\.|\/)?\d*/);
-        console.log(initInput);
-        if (!initInput) {
+        let initInput = custominput.match(/^\d+(\.\d+)?(\.|\/)?\d*/);
+        if (!initInput||(custominput.match(/\//g)&&custominput.match(/\//g).length>=2)) {
             this.errorMessages = "invalid number";
-            return;
+            return new Error(this.errorMessages);
         }
-        this.initNum = +initInput[0];
+        
+        this.initNum = +eval(initInput[0]);
         return this.initNum;
     };
 
@@ -56,12 +56,12 @@ function ConvertHandler(input) {
     };
 
     this.init = function () {
-        this.getNum();
-        this.getUnit();
-        this.convert();
-        this.getReturnUnit();
-        this.spellOutUnit();
-        this.getString();
+        this.getNum(this.input);
+        this.getUnit(this.input);
+        this.convert(this.input);
+        this.getReturnUnit(this.input);
+        this.spellOutUnit(this.input);
+        this.getString(this.input);
         return this;
     };
 }
