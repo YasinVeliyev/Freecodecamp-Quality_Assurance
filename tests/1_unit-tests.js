@@ -25,4 +25,16 @@ suite("Unit Tests", function () {
     test("Should correctly default to a numerical input of 1 when no numerical input is provided.", function () {
         assert.equal(1,convertHandler.getNum("sa"));
     });
+    test("Should correctly read each valid input unit.", function () {
+        assert.equal('km',convertHandler.getUnit("km"));
+    });
+    test("Should correctly return an error for an invalid input unit.", function () {
+        assert.instanceOf(convertHandler.getUnit("ksm"),Error);
+    });
+    test("Should return the correct return unit for each valid input unit.", function () {
+        assert.equal('mi',convertHandler.getReturnUnit("km"));
+    });
+    test("Should correctly return the spelled-out string unit for each valid input unit.", function () {
+        assert.equal('kilometers',convertHandler.spellOutUnit("km"));
+    });
 });

@@ -7,6 +7,14 @@ function ConvertHandler(input) {
         ["kg", "lbs"],
         ["mi", "km"],
     ]);
+    this.spellOutUnits = new Map([
+        ["gal", "gallons"],
+        ["km", "kilometers"],
+        ["lbs", "pounds"],
+        ["L", "liters"],
+        ["kg", "kilograms"],
+        ["mi", "miles"],
+    ]);
     this.input = input;
     this.getNum = function (custominput) {
         if(custominput.match(/^[A-Za-z]+$/)){
@@ -23,21 +31,44 @@ function ConvertHandler(input) {
     };
 
     this.getUnit = function (input) {
-        let result;
-
-        return result;
+        let initUnit=input.match(/[a-zA-Z]+$/)[0]
+        if(!this.initUnits.has(initUnit)){
+            if(this.errorMessages){
+                this.errorMessages+=" and unit"
+            }
+            else{
+                this.errorMessages="invalid unit"
+            }
+            return new Error(this.errorMessages)
+        }
+        this.initUnit=initUnit
+        return this.initUnit;
     };
 
     this.getReturnUnit = function (initUnit) {
-        let result;
-
-        return result;
+        if(!this.initUnits.has(initUnit)){
+            if(this.errorMessages){
+                this.errorMessages+=" and unit"
+            }
+            else{
+                this.errorMessages="invalid unit"
+            }
+            return new Error(this.errorMessages)
+        }
+        return this.initUnits.get(initUnit);
     };
 
     this.spellOutUnit = function (unit) {
-        let result;
-
-        return result;
+        if(!this.initUnits.has(unit)){
+            if(this.errorMessages){
+                this.errorMessages+=" and unit"
+            }
+            else{
+                this.errorMessages="invalid unit"
+            }
+            return new Error(this.errorMessages)
+        }
+        return this.spellOutUnits.get(unit);
     };
 
     this.convert = function (initNum, initUnit) {
