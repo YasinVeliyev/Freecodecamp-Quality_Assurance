@@ -1,1 +1,6 @@
-{"esversion":6}
+{
+    "esversion": 8,
+    "strict": false,
+    "laxcomma": true,
+    "node":true
+}
