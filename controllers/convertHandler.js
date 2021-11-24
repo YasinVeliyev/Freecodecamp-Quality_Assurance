@@ -16,14 +16,11 @@ function ConvertHandler(input) {
         ["mi", "miles"],
     ]);
     this.getNum = function (custominput) {
-        this.errorMesages = "";
-        let regex = /^\d+(\.?\d+)?(\.|\/\d*\.?\d*)?/;
-
+        let regex = /^\d+(\.\d+)?(\.|\/)?\d*/;
         if (custominput.match(/^[A-Za-z]+$/)) {
             custominput = 1 + custominput;
         }
         let initInput = custominput.match(regex);
-
         if (!initInput || (custominput.match(/\//g) && custominput.match(/\//g).length >= 2)) {
             this.errorMesages = "invalid number";
             return new Error(this.errorMesages);
@@ -36,7 +33,6 @@ function ConvertHandler(input) {
     };
 
     this.getUnit = function (input) {
-        this.getNum(input);
         input = input.toLowerCase();
         let initUnit = input.match(/[a-zA-Z]+$/i) || [];
         if (initUnit[0] === "l") {
