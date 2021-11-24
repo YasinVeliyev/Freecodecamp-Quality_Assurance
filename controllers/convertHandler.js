@@ -16,7 +16,8 @@ function ConvertHandler(input) {
         ["mi", "miles"],
     ]);
     this.getNum = function (custominput) {
-        let regex = /^\d+(\.?\d+)?(\.|\/)?\d*/;
+        this.errorMesages = "";
+        let regex = /^\d+(\.?\d+)?(\.|\/\d*\.?\d*)?/;
 
         if (custominput.match(/^[A-Za-z]+$/)) {
             custominput = 1 + custominput;
@@ -25,20 +26,21 @@ function ConvertHandler(input) {
 
         if (!initInput || (custominput.match(/\//g) && custominput.match(/\//g).length >= 2)) {
             this.errorMesages = "invalid number";
-            return this.errorMesages;
+            return new Error(this.errorMesages);
         }
         if (regex.test(custominput)) {
             initInput = custominput.split(/[a-zA-Z]/);
         }
         this.initNum = +eval(initInput[0]).toFixed(5);
-
         return this.initNum;
     };
 
     this.getUnit = function (input) {
+        this.getNum(input);
+        input = input.toLowerCase();
         let initUnit = input.match(/[a-zA-Z]+$/i) || [];
         if (initUnit[0] === "l") {
-            initUnit = "L";
+            initUnit[0] = "L";
         }
         if (!this.initUnits.has(initUnit[0])) {
             if (this.errorMesages == "invalid number") {
@@ -46,7 +48,7 @@ function ConvertHandler(input) {
             } else if (!this.errorMesages) {
                 this.errorMesages = "invalid unit";
             }
-            return this.errorMesages;
+            return new Error(this.errorMesages);
         }
 
         this.initUnit = initUnit[0];
@@ -54,26 +56,32 @@ function ConvertHandler(input) {
     };
 
     this.getReturnUnit = function (initUnit) {
+        if (initUnit === "l") {
+            initUnit = "L";
+        }
         if (!this.initUnits.has(initUnit)) {
             if (this.errorMesages == "invalid number") {
                 this.errorMesages += " and unit";
             } else if (!this.errorMesages) {
                 this.errorMesages = "invalid unit";
             }
-            return this.errorMesages;
+            return new Error(this.errorMesages);
         }
         this.returnUnit = this.initUnits.get(initUnit);
         return this.returnUnit;
     };
 
     this.spellOutUnit = function (unit) {
+        if (unit === "l") {
+            unit = "L";
+        }
         if (!this.initUnits.has(unit)) {
             if (this.errorMesages == "invalid number") {
                 this.errorMesages += " and unit";
             } else if (!this.errorMesages) {
                 this.errorMesages = "invalid unit";
             }
-            return this.errorMesages;
+            return new Error(this.errorMesages);
         }
         this.initUnitString = this.spellOutUnits.get(unit);
         this.returnUnitString = this.spellOutUnits.get(this.initUnits.get(unit));
@@ -81,6 +89,9 @@ function ConvertHandler(input) {
     };
 
     this.convert = function (initNum, initUnit) {
+        if (initUnit == "l") {
+            initUnit = "L";
+        }
         let converter = {
             gal: 3.78541,
             L: 1 / 3.78541,

@@ -23,7 +23,7 @@ suite("Unit Tests", function () {
         done();
     });
     test("Should correctly return an error on a double-fraction (i.e. 3/2/3).", function (done) {
-        assert.equal(convertHandler.getNum("5//2"), "invalid number");
+        assert.instanceOf(convertHandler.getNum("5//2"), Error);
         done();
     });
     test("Should correctly default to a numerical input of 1 when no numerical input is provided.", function (done) {
@@ -31,11 +31,11 @@ suite("Unit Tests", function () {
         done();
     });
     test("Should correctly read each valid input unit.", function (done) {
-        assert.equal(convertHandler.getUnit("km"), "km");
+        assert.equal(convertHandler.getUnit("l"), "L");
         done();
     });
     test("Should correctly return an error for an invalid input unit.", function (done) {
-        assert.equal(convertHandler.getUnit("sa"), "invalid number and unit");
+        assert.instanceOf(convertHandler.getUnit("5//2sa"), Error);
         done();
     });
     test("Should return the correct return unit for each valid input unit.", function (done) {
